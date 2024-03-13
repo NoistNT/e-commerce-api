@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Product } from '@/schemas/product.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ProductFilterDto } from './dto/product-filter.dto';
+import { Query } from '@/types';
 
 @Injectable()
 export class ProductService {
@@ -26,8 +28,32 @@ export class ProductService {
     }
   }
 
-  async findAll(): Promise<Product[]> {
+  async findAll(filter?: ProductFilterDto): Promise<Product[]> {
+    const query: Query = {};
+
     try {
+      if (filter) {
+        if (filter.minPrice) {
+          query.price = { $gte: filter.minPrice };
+        }
+        if (filter.maxPrice) {
+          query.price = { $lte: filter.maxPrice };
+        }
+        if (filter.name) {
+          query.name = { $regex: filter.name, $options: 'i' };
+        }
+        if (filter.brand) {
+          query.brand = { $regex: filter.brand, $options: 'i' };
+        }
+        if (filter.category) {
+          query.category = { $regex: filter.category, $options: 'i' };
+        }
+        if (filter.isActive) {
+          query.isActive = filter.isActive;
+        }
+        return await this.productModel.find(query).select('-__v');
+      }
+
       return await this.productModel.find().select('-__v');
     } catch (error) {
       const err = error as Error;

@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from '@/schemas/product.schema';
+import { ProductFilterDto } from './dto/product-filter.dto';
 
 @Controller('product')
 export class ProductController {
@@ -20,7 +21,8 @@ export class ProductController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Body() filter?: ProductFilterDto) {
+    if (filter) return this.productService.findAll(filter);
     return this.productService.findAll();
   }
 

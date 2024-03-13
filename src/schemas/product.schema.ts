@@ -1,11 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsNumber, IsPositive, IsString, Length, IsUrl } from 'class-validator';
 
-const stringOptions = {
-  required: true,
-  trim: true,
-  lowercase: true,
-};
+const stringOptions = { required: true, trim: true, lowercase: true };
 
 @Schema()
 export class Product {

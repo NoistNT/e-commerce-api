@@ -51,7 +51,7 @@ export class ProductService {
         if (filter.isActive) {
           query.isActive = filter.isActive;
         }
-        return await this.productModel.find(query).select('-__v');
+        return await this.productModel.find(query).limit(9).select('-__v');
       }
 
       return await this.productModel.find().select('-__v');

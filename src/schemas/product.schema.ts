@@ -5,7 +5,7 @@ const stringOptions = { required: true, trim: true, lowercase: true };
 
 @Schema()
 export class Product {
-  @Prop({ required: true, unique: true, trim: true, lowercase: true })
+  @Prop(stringOptions)
   @IsString()
   @Length(3, 30)
   name!: string;
